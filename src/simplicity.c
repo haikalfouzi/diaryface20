@@ -64,7 +64,7 @@ static struct PropertyAnimation* prop_animation_in = NULL;
 static struct PropertyAnimation* clock_animation_in = NULL;
 
 #ifndef PBL_COLOR
-  static InverterLayer *full_inverse_layer;
+  static Layer *full_inverse_layer;
 #endif
 
 static int g_last_tm_mday_date = -1;
@@ -108,7 +108,7 @@ static void window_unload(Window *window) {
   layer_destroy(time_layer);
 
   #ifndef PBL_COLOR
-    inverter_layer_destroy(full_inverse_layer);
+    layer_destroy(full_inverse_layer);
   #endif
 
   text_layer_destroy(text_date_layer);
@@ -166,8 +166,8 @@ static void line_layer_update_callback(Layer *layer, GContext *ctx) {
   graphics_context_set_stroke_color(ctx, TOP_LINE);
   graphics_draw_line(ctx, GPoint(0, 87), GPoint(54, 87));
   graphics_draw_line(ctx, GPoint(88, 87), GPoint(143, 87));
-    
-  graphics_context_set_stroke_color(ctx, BOTTOM_LINE); 
+
+  graphics_context_set_stroke_color(ctx, BOTTOM_LINE);
   graphics_draw_line(ctx, GPoint(0, 88), GPoint(54, 88));
   graphics_draw_line(ctx, GPoint(88, 88), GPoint(143, 88));
 }
@@ -302,7 +302,7 @@ static void animation_stopped(Animation *animation, bool finished, void *data) {
       #endif
       prop_animation_in = NULL;
     }
-    
+
     if (prop_animation_in == NULL) {
       GRect to_rect = SCROLL_IN;
       GRect from_rect = SCROLL_OUT;
@@ -329,7 +329,7 @@ void set_event_display(char *event_title, char *event_start_date, char *location
   strncpy(g_location_static, location, sizeof(g_location_static));
   g_static_entry_no = num;
   g_static_color = color;
-  
+
 
   if (!get_config_data()->animate) {
     update_event_display();
@@ -370,12 +370,12 @@ static void pebble_layer_update_callback(Layer *layer, GContext *ctx) {
    * Screen inverse setting
    */
   void set_screen_inverse_setting() {
-    layer_set_hidden(inverter_layer_get_layer(full_inverse_layer), !get_config_data()->invert);
+    layer_set_hidden(layer_get_data(full_inverse_layer), !get_config_data()->invert);
   }
 #endif
 
 /*
- * Display initialisation and further setup 
+ * Display initialisation and further setup
  */
 static void window_load(Window *window) {
 
@@ -401,13 +401,13 @@ static void window_load(Window *window) {
   text_layer_set_font(text_date_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));
   text_layer_set_text_alignment(text_date_layer, GTextAlignmentCenter);
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(text_date_layer));
-  
+
   time_layer = layer_create(CLOCK_IN);
   layer_add_child(window_get_root_layer(window), time_layer);
 
   #ifdef PBL_COLOR
     // Time shadow
-    text_time_layer2 = text_layer_create(GRect(2,2,140,56));
+    text_time_layer2 = text_layer_create(GRect(0,0,140,56));
     text_layer_set_text_color(text_time_layer2, GColorLightGray);
     text_layer_set_background_color(text_time_layer2, GColorClear);
     text_layer_set_font(text_time_layer2, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_BOLD_SUBSET_49)));
@@ -417,7 +417,7 @@ static void window_load(Window *window) {
 
   // Time
   text_time_layer = text_layer_create(GRect(0,0,140,56));
-  text_layer_set_text_color(text_time_layer, GColorWhite);
+  text_layer_set_text_color(text_time_layer, GColorBlack);
   text_layer_set_background_color(text_time_layer, GColorClear);
   text_layer_set_font(text_time_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_BOLD_SUBSET_49)));
   text_layer_set_text_alignment(text_time_layer, GTextAlignmentCenter);
@@ -433,14 +433,14 @@ static void window_load(Window *window) {
 
   // Location
   text_event_location_layer = text_layer_create(GRect(1, 54-16, 144 - 1, 27));
-  text_layer_set_text_color(text_event_location_layer, GColorWhite);
+  text_layer_set_text_color(text_event_location_layer, GColorBlack);
   text_layer_set_background_color(text_event_location_layer, GColorClear);
   text_layer_set_font(text_event_location_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
   layer_add_child(scroll_layer, text_layer_get_layer(text_event_location_layer));
 
   // Date
   text_event_start_date_layer = text_layer_create(GRect(1, 36-16, 144 - 1, 27));
-  text_layer_set_text_color(text_event_start_date_layer, GColorWhite);
+  text_layer_set_text_color(text_event_start_date_layer, GColorBlack);
   text_layer_set_background_color(text_event_start_date_layer, GColorClear);
   text_layer_set_font(text_event_start_date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
   layer_add_child(scroll_layer, text_layer_get_layer(text_event_start_date_layer));
@@ -450,14 +450,14 @@ static void window_load(Window *window) {
     GRect title_text_xy = GRect(13, 0, 144 - 13, 27);
   #else
     GRect title_text_xy = GRect(1, 0, 144 - 1, 27);
-  #endif    
-  
+  #endif
+
   text_event_title_layer = text_layer_create(title_text_xy);
-  text_layer_set_text_color(text_event_title_layer, GColorWhite);
+  text_layer_set_text_color(text_event_title_layer, GColorBlack);
   text_layer_set_background_color(text_event_title_layer, GColorClear);
   text_layer_set_font(text_event_title_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
   layer_add_child(scroll_layer, text_layer_get_layer(text_event_title_layer));
-  
+
   #ifdef PBL_COLOR
     // Bullet calendar
     bullet_layer = layer_create(GRect(1,3,12,20));
@@ -497,15 +497,15 @@ static void window_load(Window *window) {
 
   #ifndef PBL_COLOR
     // Configurable inverse
-    full_inverse_layer = inverter_layer_create(GRect(0, 0, 144, 168));
-    layer_add_child(window_get_root_layer(window), inverter_layer_get_layer(full_inverse_layer));
+    full_inverse_layer = layer_create(GRect(0, 0, 144, 168));
+    layer_add_child(window_get_root_layer(window), layer_get_data(full_inverse_layer));
     set_screen_inverse_setting();
   #endif
 
   // Put everything in an initial state
   set_battery(1, 50);
   set_status(STATUS_REQUEST);
-  set_event_display("", "", "", 0, GColorBlack);
+  set_event_display("", "", "", 0, GColorWhite);
 
   // Make sure the timers start but don't all go off together
   calendar_init();
@@ -612,7 +612,7 @@ void date_update() {
   #ifdef TEST_MODE
     strcpy(g_date_text, "Wed, May 18 (28)");
   #endif
-  
+
   text_layer_set_text(text_date_layer, g_date_text);
 
 }
@@ -648,10 +648,10 @@ static void init(void) {
   read_config_data();
 
   window = window_create();
-  window_set_background_color(window, GColorBlack);
-  #ifndef PBL_COLOR
-    window_set_fullscreen(window, true);
-  #endif
+  window_set_background_color(window, GColorWhite);
+  // #ifndef PBL_COLOR
+  //   window_set_fullscreen(window, true);
+  // #endif
   window_set_window_handlers(window, (WindowHandlers ) { .load = window_load, .unload = window_unload });
 
   const int inbound_size = app_message_inbox_size_maximum();
@@ -693,4 +693,3 @@ int main(void) {
   app_event_loop();
   deinit();
 }
-

@@ -26,7 +26,7 @@
 #define common_h
 
 #include "pebble.h"
-  
+
 //#define TEST_MODE
 
 #define RECONNECT_KEY 0
@@ -38,9 +38,9 @@
 #define REQUEST_SETTINGS_KEY 27
 #define SETTINGS_RESPONSE_KEY 28
 #define CALENDAR_RESPONSE_FORMAT_KEY 36
-  
-#define CALENDAR_RESPONSE_FORMAT_EXTENDED 2   
-#define CALENDAR_RESPONSE_FORMAT_BASALT 3    
+
+#define CALENDAR_RESPONSE_FORMAT_EXTENDED 2
+#define CALENDAR_RESPONSE_FORMAT_BASALT 3
 
 #define SETTINGS_KEY_INVERSE 200
 #define SETTINGS_KEY_ANIMATE 201
@@ -87,7 +87,7 @@ typedef struct {
   time_t end_date;   // local time
   int32_t alarms[2];
 } ExtendedEvent;
- 
+
 typedef struct {
   uint8_t index;
   char title[40];
@@ -125,19 +125,19 @@ typedef struct {
 
 #define CLOCK_IN GRect(0, 112, 143, 168-112)
 #define CLOCK_OUT GRect(0, 168, 143, 168-112)
- 
+
 #define member_size(type, member) sizeof(((type *)0)->member)
-  
+
 #ifdef PBL_COLOR
-  #define BATTERY_STROKE GColorOrange
-  #define BATTERY_FILL GColorOrange
-  #define TOP_LINE GColorDukeBlue
-  #define BOTTOM_LINE GColorOxfordBlue
-  #define DATE_COLOR GColorLightGray
+  #define BATTERY_STROKE GColorWhite
+  #define BATTERY_FILL GColorBlack
+  #define TOP_LINE GColorBlack
+  #define BOTTOM_LINE GColorBlack
+  #define DATE_COLOR GColorBlack
   #define EVENT_TYPE EventBasalt
-  #define DEFAULT_CALENDAR_COLOR GColorLightGray
+  #define DEFAULT_CALENDAR_COLOR GColorWhite
   #define CALENDAR_RESPONSE_FORMAT_SELECTED CALENDAR_RESPONSE_FORMAT_BASALT
-#else 
+#else
   #define BATTERY_STROKE GColorWhite
   #define BATTERY_FILL GColorBlack
   #define TOP_LINE GColorWhite

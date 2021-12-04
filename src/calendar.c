@@ -113,7 +113,7 @@ static void request_persist_config() {
     rotate_tick = rotate_change + 1;
     g_max_entries = 2;
   }
-#else  
+#else
   static void calendar_request() {
 
     if (!bluetooth_connection_service_peek())
@@ -267,12 +267,12 @@ static void map_if_data_to_internal(EventInternal *rot, EVENT_TYPE *iface) {
       rot->color = DEFAULT_CALENDAR_COLOR;
     }
   #endif
-  struct tm *start_date_tm = localtime(&(iface->start_date));  
+  struct tm *start_date_tm = localtime(&(iface->start_date));
   // MM/dd(/yy) H:mm
   if (clock_is_24h_style()) {
-    strftime(rot->start_date, member_size(EventInternal, start_date), "%m/%d/%y %H:%M", start_date_tm); 
+    strftime(rot->start_date, member_size(EventInternal, start_date), "%m/%d/%y %H:%M", start_date_tm);
   } else {
-    strftime(rot->start_date, member_size(EventInternal, start_date), "%m/%d/%y %l:%M %P", start_date_tm); 
+    strftime(rot->start_date, member_size(EventInternal, start_date), "%m/%d/%y %l:%M %P", start_date_tm);
   }
 }
 
@@ -541,4 +541,3 @@ void accel_data_handler(AccelData *data, uint32_t num_samples) {
   }
 
 }
-
